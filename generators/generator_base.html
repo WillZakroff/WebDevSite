@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Base Generator</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #e0f7fa;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    .base-name {
+      font-size: 1.5rem;
+      margin: 1rem 0;
+    }
+    .button {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      background-color: #00796b;
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .button:hover {
+      background-color: #004d40;
+    }
+  </style>
+</head>
+<body>
+  <h1>Random Base Generator</h1>
+  <div class="basename" id="baseName">Click the button to get a base!</div>
+  <button class="button" onclick="generateBase()">Generate base</button>
+
+  <script>
+    const bases = [
+      "Item1",
+      "Item2"
+    ];
+
+    function generateBase() {
+      const randomIndex = Math.floor(Math.random() * bases.length);
+      document.getElementById("baseName").textContent = bases[randomIndex];
+    }
+  </script>
+</body>
+</html>

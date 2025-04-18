@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Evan Generator</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #e0f7fa;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    .evan-name {
+      font-size: 1.5rem;
+      margin: 1rem 0;
+    }
+    .button {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      background-color: #00796b;
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .button:hover {
+      background-color: #004d40;
+    }
+  </style>
+</head>
+<body>
+  <h1>Random Evan Generator</h1>
+  <div class="evan-name" id="evanName">Click the button to get a Evan!</div>
+  <button class="button" onclick="generateEvan()">Generate Evan</button>
+
+  <script>
+    const evans = [
+      "Evan Testa",
+      "evan testa",
+      "EVAN TESTA",
+      "Evan",
+      "Mr. Testa",
+      "Evan T.",
+      "Evan the Great",
+      "Evanator",
+      "littlenugget"
+    ];
+
+    function generateEvan() {
+      const randomIndex = Math.floor(Math.random() * evans.length);
+      document.getElementById("evanName").textContent = evans[randomIndex];
+    }
+  </script>
+</body>
+</html>
