@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ghibli Movie Generator</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #3faceb;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    .ghibli-name {
+      font-size: 1.5rem;
+      margin: 1rem 0;
+    }
+    .button {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      background-color: #323838;
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .button:hover {
+      background-color: rgb(0, 0, 0);
+    }
+  </style>
+</head>
+<body>
+  <h1>Random Ghibli Movie Generator</h1>
+  <div class="ghibli-name" id="ghibliName">Click the button to get a Ghibli Movie!</div>
+  <button class="button" onclick="generateGhibli()">Generate Ghibli Movie</button>
+
+  <script>
+    const ghiblis = [
+      "Castle in the Sky (1986)",
+      "Grave of the Fireflies (1988)",
+      "My Neighbor Totoro (1988)",
+      "Kiki's Delivery Service (1989)",
+      "Only Yesterday (1991)",
+      "Porco Rosso (1992)",
+      "Ocean Waves (1993)",
+      "Pom Poko (1994)",
+      "Whisper of the Heart (1995)",
+      "Princess Mononoke (1997)",
+      "My Neighbors the Yamadas (1999)",
+      "Spirited Away (2001)",
+      "The Cat Returns (2002)",
+      "Howl's Moving Castle (2004)",  
+      "Tales from Earthsea (2006)",
+      "Ponyo (2008)",
+      "Arrietty (2010)",
+      "From Up on Poppy Hill (2011)",
+      "The Wind Rises (2013)",
+      "The Tale of the Princess Kaguya (2013)",
+      "When Marnie Was There (2014)",
+      "Ronja, the Robber's Daughter (2014)",
+      "The Red Turtle (2016)",
+      "Earwig and the Witch (2020)",
+      "The Boy and The Heron (2023)"
+    ];
+
+    function generateGhibli() {
+      const randomIndex = Math.floor(Math.random() * ghiblis.length);
+      document.getElementById("ghibliName").textContent = ghiblis[randomIndex];
+    }
+  </script>
+</body>
+</html>
