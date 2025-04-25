@@ -11,13 +11,14 @@
       font-family: sans-serif;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
       height: 100vh;
       background-color: #bebebe;
+      position: relative;
     }
     h1 {
       font-size: 2rem;
+      margin-top: 3rem;
       margin-bottom: 1rem;
     }
     .pokemon-name {
@@ -33,9 +34,26 @@
       border-radius: 0.5rem;
       cursor: pointer;
       transition: background-color 0.3s ease;
+      margin: 0.5rem;
     }
     .button:hover {
       background-color: #940000;
+    }
+    .back-button {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      background-color: #555;
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .back-button:hover {
+      background-color: #333;
     }
     .poke-card {
       background: rgb(255, 99, 99);
@@ -59,9 +77,10 @@
   </style>
 </head>
 <body>
+  <button class="back-button" onclick="goBack()">Back</button>
   <h1>Random Pokemon Generator</h1>
   <div class="pokemon-name" id="pokemonName">Click the button to get a pokemon!</div>
-  <button class="button" onclick="generatePokemon()">Generate pokemon</button>
+  <button class="button" onclick="generatePokemon()">Generate Pokemon</button>
   <div class="poke-card" id="pokemon-card" style="display: none;">
     <img id="pokemon-image" src="" alt="Pokémon">
     <h2 id="pokemon-name"></h2>
@@ -69,7 +88,7 @@
 
   <script>
     async function generatePokemon() {
-      const maxPokemon = 1010; // Total as of latest gen, update if needed
+      const maxPokemon = 1010;
       const randomId = Math.floor(Math.random() * maxPokemon) + 1;
       const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${randomId}`);
       const data = await res.json();
@@ -79,6 +98,9 @@
       document.getElementById('pokemon-card').style.display = 'block';
     }
 
+    function goBack() {
+      window.history.back();
+    }
   </script>
 </body>
 </html>

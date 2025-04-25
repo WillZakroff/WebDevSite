@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>D&D Character Generator</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #e0d6c2;
+      min-height: 100vh;
+      position: relative;
+    }
+    h1 {
+      margin-top: 3rem;
+      margin-bottom: 1rem;
+      font-size: 2rem;
+    }
+    .button {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      background-color: #7b4b17;
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      margin: 1rem;
+      transition: background-color 0.3s ease;
+    }
+    .button:hover {
+      background-color: #5c3612;
+    }
+    .back-button {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      background-color: #555;
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .back-button:hover {
+      background-color: #333;
+    }
+    .character-card {
+      background: #fff8ef;
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      text-align: center;
+      margin-top: 1rem;
+      width: 320px;
+    }
+    .character-card h2, .character-card h3 {
+      margin-bottom: 0.5rem;
+    }
+    .character-card a {
+      text-decoration: none;
+      color: #7b4b17;
+    }
+    .character-card a:hover {
+      text-decoration: underline;
+    }
+    .stats, .equipment {
+      margin-top: 1rem;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+
+  <button class="back-button" onclick="goBack()">Back</button>
+
+  <h1>Random D&D Character Generator</h1>
+  <button class="button" onclick="generateCharacter()">Generate Character</button>
+
+  <div class="character-card" id="character-card" style="display: none;">
+    <h2 id="character-name"></h2>
+    <h3><a id="race-link" href="#" target="_blank"></a></h3>
+    <h3><a id="class-link" href="#" target="_blank"></a></h3>
+    <h3 id="background"></h3>
+    <div class="stats" id="stats"></div>
+    <div class="equipment" id="equipment"></div>
+    <div class="proficiencies" id="proficiencies"></div>
+  </div>
+
+  <script>
+    const classes = [
+      "Artificer", "Barbarian", "Bard", "Cleric", "Druid", "Fighter", "Monk",
+      "Paladin", "Ranger", "Rogue", "Sorcerer", "Warlock", "Wizard"
+    ];
+
+    const races = [
+      "Human", "Elf", "Dwarf", "Halfling", "Dragonborn", "Gnome",
+      "Half-Elf", "Half-Orc", "Tiefling", "Aasimar", "Firbolg", "Tabaxi"
+    ];
+
+    const backgrounds = [
+      "Acolyte", "Charlatan", "Criminal", "Entertainer", "Folk Hero",
+      "Guild Artisan", "Hermit", "Noble", "Outlander", "Sage", "Sailor", "Soldier", "Urchin"
+    ];
+
+    const starterEquipment = {
+      Artificer: ["Thieves’ tools", "Tinker’s tools", "Light crossbow and 20 bolts", "Two simple weapons", "Scale mail, studded leather armor, or padded armor", "Dungeoneer's pack or Explorer’s pack"],
+      Barbarian: ["Greataxe or any martial melee weapon", "Two handaxes or any simple weapon", "Explorer’s pack", "Four javelins"],
+      Bard: ["Rapier, longsword, or simple weapon", "Diplomat’s pack or Entertainer’s pack", "Lute or any musical instrument", "Leather armor", "Dagger"],
+      Cleric: ["Mace or warhammer", "Scale mail, leather armor, or chain mail", "Light crossbow and 20 bolts or any simple weapon", "Priest’s pack or Explorer’s pack", "Shield and holy symbol"],
+      Druid: ["Wooden shield or simple weapon", "Scimitar or simple melee weapon", "Leather armor", "Explorer’s pack", "Druidic focus"],
+      Fighter: ["Chain mail or leather armor, longbow, and 20 arrows", "Martial weapon and shield or two martial weapons", "Light crossbow and 20 bolts or two handaxes", "Dungeoneer’s pack or Explorer’s pack"],
+      Monk: ["Shortsword or any simple weapon", "Dungeoneer’s pack or Explorer’s pack", "10 darts"],
+      Paladin: ["Martial weapon and shield or two martial weapons", "Five javelins or any simple melee weapon", "Priest’s pack or Explorer’s pack", "Chain mail", "Holy symbol"],
+      Ranger: ["Scale mail or leather armor", "Two shortswords or two simple melee weapons", "Dungeoneer’s pack or Explorer’s pack", "Longbow and 20 arrows"],
+      Rogue: ["Rapier or shortsword", "Shortbow and quiver of 20 arrows or shortsword", "Burglar’s pack, dungeoneer’s pack, or explorer’s pack", "Leather armor", "Two daggers", "Thieves’ tools"],
+      Sorcerer: ["Light crossbow and 20 bolts or any simple weapon", "Component pouch or arcane focus", "Dungeoneer’s pack or Explorer’s pack", "Two daggers"],
+      Warlock: ["Light crossbow and 20 bolts or any simple weapon", "Component pouch or arcane focus", "Scholar’s pack or dungeoneer’s pack", "Leather armor", "Any simple weapon", "Two daggers"],
+      Wizard: ["Quarterstaff or dagger", "Component pouch or arcane focus", "Scholar’s pack or explorer’s pack", "Spellbook"]
+    };
+
+    const raceNames = {
+      Human: ["Aric", "Leona", "Darian", "Mira", "Cedric", "Selene"],
+      Elf: ["Faelar", "Shalana", "Theren", "Aeris", "Lathlaeril", "Enna"],
+      Dwarf: ["Thorin", "Brynna", "Durik", "Hilda", "Dworic", "Helja"],
+      Halfling: ["Perrin", "Seraphina", "Milo", "Rosie", "Finnan", "Callie"],
+      Dragonborn: ["Rhogar", "Akra", "Tarhun", "Kava", "Balasar", "Jheri"],
+      Gnome: ["Alston", "Bimpnottin", "Wrenn", "Tana", "Fonkin", "Nissa"],
+      "Half-Elf": ["Kaelen", "Seltyiel", "Adrie", "Kieran", "Peren", "Arwen"],
+      "Half-Orc": ["Grog", "Shaundra", "Drog", "Mazoga", "Thokk", "Baggi"],
+      Tiefling: ["Zerath", "Lilith", "Akmenos", "Orianna", "Barakas", "Rieta"],
+      Aasimar: ["Cassiel", "Amaris", "Raziel", "Selene", "Lucian", "Mariel"],
+      Firbolg: ["Bryn", "Orla", "Tovar", "Mabryn", "Aengus", "Kaela"],
+      Tabaxi: ["Whisper", "Moon", "Shadow", "Pounce", "Silent Rain", "Dancing Leaf"]
+    };
+
+    const classProficiencies = {
+        Barbarian: ["Animal Handling", "Athletics", "Intimidation", "Nature", "Perception", "Survival"],
+  Bard: ["Any three skills of your choice"],
+  Cleric: ["History", "Insight", "Medicine", "Persuasion", "Religion"],
+  Druid: ["Arcana", "Animal Handling", "Insight", "Medicine", "Nature", "Perception", "Religion", "Survival"],
+  Fighter: ["Acrobatics", "Animal Handling", "Athletics", "History", "Insight", "Intimidation", "Perception", "Survival"],
+  Monk: ["Acrobatics", "Athletics", "History", "Insight", "Religion", "Stealth"],
+  Paladin: ["Athletics", "Insight", "Intimidation", "Medicine", "Persuasion", "Religion"],
+  Ranger: ["Animal Handling", "Athletics", "Insight", "Investigation", "Nature", "Perception", "Stealth", "Survival"],
+  Rogue: ["Acrobatics", "Athletics", "Deception", "Insight", "Intimidation", "Investigation", "Perception", "Performance", "Persuasion", "Sleight of Hand", "Stealth"],
+  Sorcerer: ["Arcana", "Deception", "Insight", "Intimidation", "Persuasion", "Religion"],
+  Warlock: ["Arcana", "Deception", "History", "Intimidation", "Investigation", "Nature", "Religion"],
+  Wizard: ["Arcana", "History", "Insight", "Investigation", "Medicine", "Religion"],
+  Artificer: ["Arcana", "History", "Investigation", "Medicine", "Nature", "Perception", "Sleight of Hand"]
+};
+
+    const raceProficiencies = {
+        Human: [],
+  Elf: ["Perception"],
+  Dwarf: ["History (Stonework)"],
+  Halfling: ["Stealth"],
+  Dragonborn: [],
+  Gnome: ["Tinker’s Tools"],
+  "Half-Elf": ["Skill of choice (x2)"], // They pick any two
+  "Half-Orc": ["Intimidation"],
+  Tiefling: [],
+  Aasimar: [],
+  Firbolg: ["Animal Handling"],
+  Tabaxi: ["Perception", "Stealth"],
+  Kenku: ["Deception", "Stealth"],
+  Lizardfolk: ["Survival", "Stealth"],
+  Goblin: ["Stealth"],
+  Bugbear: ["Stealth", "Surprise Attack"],
+  Hobgoblin: ["Saving Throw bonus (Int, Wis, Cha)"],
+  Kobold: [],
+  YuanTiPureblood: ["Poison Resistance", "Magic Resistance"]
+};
+
+    const backgroundProficiencies = {
+        Acolyte: ["Insight", "Religion"],
+  Charlatan: ["Deception", "Sleight of Hand"],
+  Criminal: ["Deception", "Stealth"],
+  Entertainer: ["Acrobatics", "Performance"],
+  "Folk Hero": ["Animal Handling", "Survival"],
+  "Guild Artisan": ["Insight", "Persuasion"],
+  Hermit: ["Medicine", "Religion"],
+  Noble: ["History", "Persuasion"],
+  Outlander: ["Athletics", "Survival"],
+  Sage: ["Arcana", "History"],
+  Sailor: ["Athletics", "Perception"],
+  Soldier: ["Athletics", "Intimidation"],
+  Urchin: ["Sleight of Hand", "Stealth"]
+    };
+
+    function rollStat() {
+      let rolls = [];
+      for (let i = 0; i < 4; i++) {
+        rolls.push(Math.floor(Math.random() * 6) + 1);
+      }
+      rolls.sort((a, b) => a - b);
+      rolls.shift();
+      return rolls.reduce((a, b) => a + b, 0);
+    }
+
+    function formatUrl(name, type) {
+      const baseUrls = {
+        class: "https://rpgbot.net/dnd5/characters/classes/",
+        race: "https://rpgbot.net/dnd5/characters/races/"
+      };
+      let formattedName = name.toLowerCase().replace(/\s+/g, '-');
+      return baseUrls[type] + formattedName;
+    }
+
+    function generateCharacter() {
+      const randomClass = classes[Math.floor(Math.random() * classes.length)];
+      const randomRace = races[Math.floor(Math.random() * races.length)];
+      const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+      const randomName = raceNames[randomRace][Math.floor(Math.random() * raceNames[randomRace].length)];
+
+      const statBlock = {
+        "Strength": rollStat(),
+        "Dexterity": rollStat(),
+        "Constitution": rollStat(),
+        "Intelligence": rollStat(),
+        "Wisdom": rollStat(),
+        "Charisma": rollStat()
+      };
+
+      document.getElementById('character-name').textContent = randomName;
+
+      const raceLink = document.getElementById('race-link');
+      raceLink.textContent = "Race: " + randomRace;
+      raceLink.href = formatUrl(randomRace, "race");
+
+      const classLink = document.getElementById('class-link');
+      classLink.textContent = "Class: " + randomClass;
+      classLink.href = formatUrl(randomClass, "class");
+      document.getElementById('background').textContent = "Background: " + randomBackground;
+
+      const statsDiv = document.getElementById('stats');
+      statsDiv.innerHTML = "";
+      for (let [stat, value] of Object.entries(statBlock)) {
+        statsDiv.innerHTML += `<strong>${stat}:</strong> ${value}<br>`;
+      }
+
+      const equipmentDiv = document.getElementById('equipment');
+      equipmentDiv.innerHTML = "<h3>Starter Equipment:</h3>";
+      if (starterEquipment[randomClass]) {
+        starterEquipment[randomClass].forEach(item => {
+          equipmentDiv.innerHTML += `• ${item}<br>`;
+        });
+      } else {
+        equipmentDiv.innerHTML += "No equipment found.";
+      }
+
+      const proficienciesDiv = document.getElementById('proficiencies');
+      proficienciesDiv.innerHTML = "<h3>Proficiencies:</h3>";
+      let proficiencies = [];
+
+      if (classProficiencies[randomClass]) proficiencies = proficiencies.concat(classProficiencies[randomClass]);
+      if (raceProficiencies[randomRace]) proficiencies = proficiencies.concat(raceProficiencies[randomRace]);
+      if (backgroundProficiencies[randomBackground]) proficiencies = proficiencies.concat(backgroundProficiencies[randomBackground]);
+
+      // Remove duplicates
+      const uniqueProficiencies = [...new Set(proficiencies)];
+      uniqueProficiencies.forEach(prof => {
+        proficienciesDiv.innerHTML += `• ${prof}<br>`;
+      });
+
+      document.getElementById('character-card').style.display = 'block';
+    }
+
+    function goBack() {
+      window.history.back();
+    }
+  </script>
+
+</body>
+</html>

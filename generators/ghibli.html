@@ -37,9 +37,26 @@
     .button:hover {
       background-color: rgb(0, 0, 0);
     }
+    .back-button {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      background-color: #555;
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .back-button:hover {
+      background-color: #333;
+    }
   </style>
 </head>
 <body>
+  <button class="back-button" onclick="goBack()">Back</button>
   <h1>Random Ghibli Movie Generator</h1>
   <div class="ghibli-name" id="ghibliName">Click the button to get a Ghibli Movie!</div>
   <button class="button" onclick="generateGhibli()">Generate Ghibli Movie</button>
@@ -76,6 +93,10 @@
     function generateGhibli() {
       const randomIndex = Math.floor(Math.random() * ghiblis.length);
       document.getElementById("ghibliName").textContent = ghiblis[randomIndex];
+    }
+
+    function goBack() {
+      window.history.back();
     }
   </script>
 </body>

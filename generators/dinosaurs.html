@@ -37,9 +37,26 @@
     .button:hover {
       background-color: #442706;
     }
+    .back-button {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      background-color: #555;
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .back-button:hover {
+      background-color: #333;
+    }
   </style>
 </head>
 <body>
+  <button class="back-button" onclick="goBack()">Back</button>
   <h1>Random Dinosaur Generator</h1>
   <div class="dino-name" id="dinoName">Click the button to get a dinosaur!</div>
   <button class="button" onclick="generateDinosaur()">Generate Dinosaur</button>
@@ -160,6 +177,10 @@
     function generateDinosaur() {
       const randomIndex = Math.floor(Math.random() * dinosaurs.length);
       document.getElementById("dinoName").textContent = dinosaurs[randomIndex];
+    }
+
+    function goBack() {
+      window.history.back();
     }
   </script>
 </body>

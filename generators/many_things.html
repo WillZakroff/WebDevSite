@@ -37,9 +37,26 @@
     .button:hover {
       background-color: #7b0150;
     }
+    .back-button {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      background-color: #555;
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .back-button:hover {
+      background-color: #333;
+    }
   </style>
 </head>
 <body>
+  <button class="back-button" onclick="goBack()">Back</button>
   <h1>Random Deck of Many Things Generator</h1>
   <div class="manyThings-name" id="manyThingsName">Click the button to get a card from the Deck of Many Things!</div>
   <button class="button" onclick="generateManyThings()">Generate Card</button>
@@ -73,6 +90,10 @@
     function generateManyThings() {
       const randomIndex = Math.floor(Math.random() * manyThingss.length);
       document.getElementById("manyThingsName").textContent = manyThingss[randomIndex];
+    }
+
+    function goBack() {
+      window.history.back();
     }
   </script>
 </body>

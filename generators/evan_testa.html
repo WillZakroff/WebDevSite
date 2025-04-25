@@ -37,9 +37,26 @@
     .button:hover {
       background-color: #004d40;
     }
+    .back-button {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      background-color: #555;
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .back-button:hover {
+      background-color: #333;
+    }
   </style>
 </head>
 <body>
+  <button class="back-button" onclick="goBack()">Back</button>
   <h1>Random Evan Generator</h1>
   <div class="evan-name" id="evanName">Click the button to get a Evan!</div>
   <button class="button" onclick="generateEvan()">Generate Evan</button>
@@ -60,6 +77,10 @@
     function generateEvan() {
       const randomIndex = Math.floor(Math.random() * evans.length);
       document.getElementById("evanName").textContent = evans[randomIndex];
+    }
+
+    function goBack() {
+      window.history.back();
     }
   </script>
 </body>
